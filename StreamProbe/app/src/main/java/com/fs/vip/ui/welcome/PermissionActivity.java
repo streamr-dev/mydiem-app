@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 
 import com.fs.vip.R;
 import com.fs.vip.base.BaseActivity;
+import com.fs.vip.utils.PermissionMonitor;
 import com.fs.vip.utils.PermissionUtils;
 
 import java.util.Arrays;
@@ -50,8 +51,7 @@ public class PermissionActivity extends BaseActivity {
     @BindView(R.id.lly_back)
     LinearLayout llyBack;
     private final int REQUEST_CODE_PERMISSIONS = 2;
-    private final String[] PERMISSIONS = new String[]{Manifest.permission.READ_PHONE_STATE
-            , Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    private final String[] PERMISSIONS = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
 
     @Override
     public int getLayoutId() {
@@ -61,7 +61,7 @@ public class PermissionActivity extends BaseActivity {
     @Override
     public void initToolBar() {
         commonToolbar.setBackgroundColor(0xFF7CAEEB);
-        tvTitle.setText("Permissions");
+        tvTitle.setText("App Transperancy");
         tvTitle.setTextColor(0xffffffff);
     }
 
@@ -80,15 +80,13 @@ public class PermissionActivity extends BaseActivity {
     public void onViewClicked(View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestMorePermissions();
-        } else {
-            initPermissons();
         }
     }
 
 
     // 普通申请多个权限
     private void requestMorePermissions() {
-        PermissionUtils.checkAndRequestMorePermissions(mContext, PERMISSIONS, REQUEST_CODE_PERMISSIONS, this::initPermissons);
+        PermissionUtils.checkAndRequestMorePermissions(mContext, PERMISSIONS, REQUEST_CODE_PERMISSIONS);
     }
 
     @Override
@@ -97,7 +95,8 @@ public class PermissionActivity extends BaseActivity {
             PermissionUtils.onRequestMorePermissionsResult(mContext, PERMISSIONS, new PermissionUtils.PermissionCheckCallBack() {
                 @Override
                 public void onHasPermission() {
-                    initPermissons();
+                    startActivity(new Intent(mContext, PermissionStatsActivity.class));
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
 
                 @Override
@@ -113,47 +112,6 @@ public class PermissionActivity extends BaseActivity {
         }
     }
 
-    private void initPermissons() {
-        if (checkUseMannager()) {
-            if (hasPermissionToReadNetworkStats()) {
-                startActivity(new Intent(mContext, StreamrActivity.class));
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-            }
-        } else {
-            startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-        }
-
-    }
-
-    private boolean hasPermissionToReadNetworkStats() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        final AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
-        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
-                android.os.Process.myUid(), getPackageName());
-        if (mode == AppOpsManager.MODE_ALLOWED) {
-            return true;
-        }
-        requestReadNetworkStats();
-        return false;
-    }
-
-    // 打开“有权查看使用情况的应用”页面
-    private void requestReadNetworkStats() {
-        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-        startActivity(intent);
-    }
-
-    private boolean checkUseMannager() {
-        AppOpsManager appOps = (AppOpsManager) mContext.getSystemService(Context.APP_OPS_SERVICE);
-        if (appOps != null) {
-            int mode = appOps.checkOpNoThrow(OPSTR_GET_USAGE_STATS, myUid(), mContext.getPackageName());
-            return mode == MODE_ALLOWED;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * 显示前往应用设置Dialog
@@ -165,4 +123,5 @@ public class PermissionActivity extends BaseActivity {
                 .setPositiveButton("Go", (dialog, which) -> PermissionUtils.toAppSetting(mContext))
                 .setNegativeButton("Cancel", null).show();
     }
+
 }

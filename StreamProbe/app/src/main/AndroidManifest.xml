@@ -29,6 +29,7 @@
         <activity android:name=".ui.welcome.WalletWelcomeActivity" />
         <activity android:name=".ui.welcome.StreamrActivity" />
         <activity android:name=".ui.welcome.PermissionActivity" />
+        <activity android:name=".ui.welcome.PermissionStatsActivity" />
         <activity android:name=".ui.welcome.WelcomActivity"/>
         <activity android:name=".ui.main.MainActivity" />
 
@@ -47,11 +48,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
-    <uses-permission android:name="android.permission.BLUETOOTH" />
 
 </manifest>

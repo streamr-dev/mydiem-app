@@ -22,7 +22,7 @@
             <LinearLayout
                 android:id="@+id/ll_all"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="550dp"
                 android:background="#F2F2F2"
                 android:gravity="fill_vertical"
                 android:orientation="vertical">
@@ -36,37 +36,18 @@
                     android:layout_marginRight="20dp"
                     android:gravity="center_vertical|left"
                     android:lineSpacingMultiplier="1"
-                    android:text="@string/activity_permission.header"
+                    android:text="@string/activity_permission_stats.header"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="left|center_vertical"
-                    android:lineSpacingMultiplier="1"
-                    android:text="@string/activity_permission.access"
-                    android:textAlignment="viewStart"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
+                <VideoView
+                    android:id="@+id/videoView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical|left"
-                    android:lineSpacingMultiplier="1"
-                    android:text="@string/activity_permission.request"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
             </LinearLayout>
 
             <Button
@@ -78,7 +59,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/base_button_shape"
-                android:text="@string/activity_permission.authorize"
+                android:text="@string/activity_permission_stats.authorize"
                 android:textColor="@color/white" />
         </RelativeLayout>
     </ScrollView>

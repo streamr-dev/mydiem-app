@@ -1,10 +1,12 @@
 package com.fs.vip.ui.welcome;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -88,6 +90,9 @@ public class CreateWalletActivity extends BaseActivity {
             case R.id.btn_create:
                 if (!TextUtils.isEmpty(tvPassword.getText())&&!TextUtils.isEmpty(tvRePassword.getText())&&tvPassword.getText().toString().equals(tvRePassword.getText().toString())){
                     showDialog("Creating");
+                    //Hide input keyboard after clicking Create wallet button
+                    InputMethodManager inputManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
                     Observable.create((ObservableOnSubscribe<ETHWallet>) e -> {
                         ETHWallet ethWallet = ETHWalletUtils.generateMnemonic(generateNewWalletName(), tvPassword.getText().toString());
                         WalletDaoUtils.insertNewWallet(ethWallet);
@@ -116,6 +121,10 @@ public class CreateWalletActivity extends BaseActivity {
                                 public void onComplete() {
                                 }
                             });
+                    //Disable input fields for password after wallet creation
+                    tvPassword.setEnabled(false);
+                    tvRePassword.setEnabled(false);
+                    btnCreate.setEnabled(false);
                 }
                 break;
             case R.id.btn_continue:

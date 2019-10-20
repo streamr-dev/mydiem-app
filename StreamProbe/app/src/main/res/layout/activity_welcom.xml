@@ -22,7 +22,7 @@
             <LinearLayout
                 android:id="@+id/ll_all"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="550dp"
                 android:background="#F2F2F2"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -30,37 +30,67 @@
                 <ImageView
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:adjustViewBounds="true"
-                    android:src="@mipmap/iv_welcom"
-                    android:layout_marginTop="20dp"/>
+                    android:src="@mipmap/iv_welcom" />
 
                 <TextView
+                    android:id="@+id/textView2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="92dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="0dp"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="@string/activity_welcome.intro1"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="92dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="0dp"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="@string/activity_welcome.intro2"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="92dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="40dp"
                     android:gravity="center"
                     android:lineSpacingMultiplier="1.3"
-                    android:text="Streamr Probe is an app that allows you to analyze your phones usages metrics and share that to the Streamr Marketplace so it will become part of the Probe Data Union\n\nYou need to authorize to some permissions first in order to use this application"
+                    android:text="@string/activity_welcome.intro3"
                     android:textColor="#000000"
                     android:textSize="16sp" />
+
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_sure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_all"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/base_button_shape"
-                android:text="CONTINUE"
-                android:layout_marginBottom="20dp"
-                android:textColor="@color/white" />
         </RelativeLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btn_sure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/base_button_shape"
+        android:text="CONTINUE"
+        android:textColor="@color/white" />
 
 
 </LinearLayout>
