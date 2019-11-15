@@ -23,7 +23,7 @@ public class WalletWelcomeActivity extends BaseActivity {
     @BindView(R.id.btn_create)
     Button btnCreate;
     @BindView(R.id.btn_import)
-    Button btnImport;
+    TextView btnImport;
 
     @Override
     public int getLayoutId() {
@@ -56,8 +56,7 @@ public class WalletWelcomeActivity extends BaseActivity {
                 overridePendingTransition(R.anim.right_in,R.anim.left_out);
                 break;
             case R.id.btn_import:
-                startActivity(new Intent(mContext, ImportWalletActivity.class));
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
                 break;
         }
     }

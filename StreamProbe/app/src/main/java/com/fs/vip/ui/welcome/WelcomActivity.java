@@ -63,7 +63,7 @@ public class WelcomActivity extends BaseActivity {
 
     @OnClick(R.id.btn_sure)
     public void onViewClicked() {
-        startActivity(new Intent(mContext, PermissionActivity.class));
+        startActivity(new Intent(mContext, TransparencyActivity.class));
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 }

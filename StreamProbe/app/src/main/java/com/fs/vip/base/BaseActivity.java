@@ -29,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
     protected int statusBarColor = 0;
     protected View statusBarView = null;
-    private CustomDialog dialog;//进度条
+    private CustomDialog dialog;
     private Unbinder unbinder;
 
     @Override

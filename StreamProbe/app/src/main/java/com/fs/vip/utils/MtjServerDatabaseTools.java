@@ -1,5 +1,7 @@
 package com.fs.vip.utils;
 
+import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -49,7 +51,9 @@ public class MtjServerDatabaseTools {
         try {
             if (conn == null) {
                 conn = getSQLConnection();
-                stmt = conn.createStatement();
+                if (conn!=null){
+                    stmt = conn.createStatement();
+                }
             }
             if (conn == null || stmt == null) {
                 return i;

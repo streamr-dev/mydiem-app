@@ -2,6 +2,7 @@ package com.fs.vip;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
@@ -13,7 +14,11 @@ import com.fs.vip.utils.AppUtils;
 import com.fs.vip.utils.SharedPreferencesUtil;
 import com.xdandroid.hellodaemon.DaemonEnv;
 
+import me.yokeyword.fragmentation.Fragmentation;
+import me.yokeyword.fragmentation.helper.ExceptionHandler;
+
 public class App extends MultiDexApplication {
+
     private static App sInstance;
 
     private DaoSession daoSession;
@@ -27,6 +32,14 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+
+        Fragmentation.builder()
+                .stackViewMode(Fragmentation.BUBBLE)
+                .debug(false)
+                .handleException(e -> {
+                })
+                .install();
+
         AppUtils.init(this);
         AppFilePath.init(this);
         initPrefs();

@@ -10,9 +10,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,7 +24,6 @@ import com.fs.vip.R;
 import com.fs.vip.base.BaseActivity;
 import com.fs.vip.domain.UsageStatsWrapper;
 import com.fs.vip.service.DeService;
-import com.fs.vip.utils.SharedPreferencesUtil;
 import com.fs.vip.view.CirclePercentView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.xdandroid.hellodaemon.DaemonEnv;
@@ -38,9 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import jnr.ffi.annotations.In;
 
 public class AppsInfoActivity extends BaseActivity {
 

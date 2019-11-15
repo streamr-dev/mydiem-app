@@ -13,6 +13,7 @@
         android:gravity="center_vertical">
 
         <ImageView
+            android:id="@+id/iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/iv_pic_bg" />
@@ -21,7 +22,8 @@
             android:id="@+id/tv_time"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@+id/iv"
             android:text="june 14,2019"
             android:textColor="#000000" />
 

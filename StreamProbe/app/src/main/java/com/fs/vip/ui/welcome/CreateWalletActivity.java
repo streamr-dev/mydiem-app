@@ -1,10 +1,15 @@
 package com.fs.vip.ui.welcome;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,6 +51,10 @@ public class CreateWalletActivity extends BaseActivity {
     TextView tvTitle;
     @BindView(R.id.lly_back)
     LinearLayout llyBack;
+    @BindView(R.id.ll_next1)
+    LinearLayout llNext1;
+    @BindView(R.id.ll_next2)
+    LinearLayout llNext2;
     @BindView(R.id.common_toolbar)
     Toolbar commonToolbar;
     @BindView(R.id.tv_password)
@@ -73,7 +82,50 @@ public class CreateWalletActivity extends BaseActivity {
 
     @Override
     public void initDatas() {
+        tvPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+               changeCreateButton();
+
+            }
+        });
+        tvRePassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                changeCreateButton();
+
+            }
+        });
+    }
+
+    private void changeCreateButton() {
+        if (!TextUtils.isEmpty(tvPassword.getText())&&!TextUtils.isEmpty(tvRePassword.getText())&&tvPassword.getText().toString().length()>=8&&tvRePassword.getText().toString().length()>=8){
+            btnCreate.setBackgroundResource(R.drawable.base_button_shape);
+            btnCreate.setClickable(true);
+        }else{
+            btnCreate.setBackgroundResource(R.drawable.base_button_shape_gray);
+            btnCreate.setClickable(false);
+        }
     }
 
     @Override
@@ -82,12 +134,18 @@ public class CreateWalletActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.btn_create, R.id.btn_continue})
+    @OnClick({R.id.btn_create, R.id.btn_continue,R.id.tv_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.tv_back:
+                finish();
+                break;
             case R.id.btn_create:
                 if (!TextUtils.isEmpty(tvPassword.getText())&&!TextUtils.isEmpty(tvRePassword.getText())&&tvPassword.getText().toString().equals(tvRePassword.getText().toString())){
                     showDialog("Creating");
+                    //Hide input keyboard after clicking Create wallet button
+                    InputMethodManager inputManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
                     Observable.create((ObservableOnSubscribe<ETHWallet>) e -> {
                         ETHWallet ethWallet = ETHWalletUtils.generateMnemonic(generateNewWalletName(), tvPassword.getText().toString());
                         WalletDaoUtils.insertNewWallet(ethWallet);
@@ -104,6 +162,8 @@ public class CreateWalletActivity extends BaseActivity {
                                 public void onNext(ETHWallet wallet) {
                                     ToastUtils.showLongToast("success");
                                     tvSeed.setText(wallet.getMnemonic().trim());
+                                    llNext1.setVisibility(View.GONE);
+                                    llNext2.setVisibility(View.VISIBLE);
                                 }
 
                                 @Override
@@ -116,11 +176,15 @@ public class CreateWalletActivity extends BaseActivity {
                                 public void onComplete() {
                                 }
                             });
+                    //Disable input fields for password after wallet creation
+                    tvPassword.setEnabled(false);
+                    tvRePassword.setEnabled(false);
+                    btnCreate.setEnabled(false);
                 }
                 break;
             case R.id.btn_continue:
                 SharedPreferencesUtil.getInstance().putString("welcomed","true");
-                Intent intent = new Intent(mContext,AppsInfoActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent intent = new Intent(mContext,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 //                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;

@@ -58,17 +58,17 @@
                 android:text="CREATE A WALLET"
                 android:textColor="@color/white" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_import"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_create"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/base_button_shape"
-                android:text="IMPORT A WALLET"
+                android:text="BACK"
+                android:textSize="16sp"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/white" />
+                android:textColor="#06A1FF"/>
         </RelativeLayout>
     </ScrollView>
 

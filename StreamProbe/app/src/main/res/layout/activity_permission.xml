@@ -24,67 +24,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:background="#F2F2F2"
+                android:gravity="fill_vertical"
                 android:orientation="vertical">
 
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical|left"
+                    android:lineSpacingMultiplier="1"
+                    android:textColor="#929292"
+                    android:text="@string/activity_permission.info"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical|left"
-                    android:lineSpacingMultiplier="1"
-                    android:text="1.Get a list of all application that are stored on the phone."
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical|left"
-                    android:lineSpacingMultiplier="1"
-                    android:text="2.Read about how much time you spend on each application."
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical|left"
-                    android:lineSpacingMultiplier="1"
-                    android:text="3.The application activity names and it`s model data usage."
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical|left"
-                    android:lineSpacingMultiplier="1"
-                    android:text="4.Mobile device information including country and netword type."
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
+
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_sure"
+                android:id="@+id/btn_continue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_all"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="16sp"
                 android:background="@drawable/base_button_shape"
-                android:text="AUTHORIZE APPLICATION"
-                android:layout_marginBottom="20dp"
+                android:text="@string/activity_permission.allow"
                 android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_continue"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                android:text="@string/activity_transparency.back"
+                android:textColor="#06A0FF" />
         </RelativeLayout>
     </ScrollView>
 

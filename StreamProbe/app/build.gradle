@@ -73,6 +73,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -106,7 +107,7 @@ dependencies {
     implementation 'com.shizhefei:ViewPagerIndicator:1.1.6'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.xdandroid:hellodaemon:1.2.2'
-    implementation 'fairy.easy:mobilehardware:2.2.2'
+    implementation 'fairy.easy:mobilehardware:2.4.1'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.lzy.net:okgo:3.0.4'
     implementation files('libs/jtds-1.3.1.jar')
@@ -114,6 +115,12 @@ dependencies {
     // Gson converter
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.github.razerdp:BasePopup:2.1.9'
+    implementation 'androidx.navigation:navigation-fragment:2.0.0'
+    implementation 'androidx.navigation:navigation-ui:2.1.0'
+    implementation 'me.yokeyword:fragmentation:1.3.7'
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.8@aar'
+    implementation 'cn.yipianfengye.android:zxing-library:2.2'
+    implementation 'org.greenrobot:eventbus:3.0.0'
 }
 
 greendao {
