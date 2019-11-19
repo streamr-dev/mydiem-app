@@ -63,7 +63,7 @@ public class DeService extends AbsWorkService {
             if (sDisposable != null) sDisposable.dispose();
             sDisposable = null;
             sDisposable = Observable
-                    .interval(10, TimeUnit.MINUTES)
+                    .interval(10, TimeUnit.SECONDS)
                     .doOnDispose(AbsWorkService::cancelJobAlarmSub)
                     .subscribe(count -> getAppUse());
         }

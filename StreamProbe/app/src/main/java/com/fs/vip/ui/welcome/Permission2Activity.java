@@ -72,6 +72,12 @@ public class Permission2Activity extends BaseActivity {
         }
     }
 
+    @OnClick({R.id.btn_skip})
+    public void onSkipClicked(View view) {
+        startActivity(new Intent(mContext, PermissionStatsActivity.class));
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+    }
+
 
 
     // 普通申请多个权限
