@@ -41,6 +41,9 @@
     <string name="activity_permission.allow">
         ALLOW
     </string>
+    <string name="activity_permission.skip">
+        SKIP
+    </string>
     <string name="activity_permission.info">
         To track app usage metrics,please allow us to access media on your device.
     </string>
