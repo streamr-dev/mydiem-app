@@ -1,6 +1,8 @@
 package com.fs.vip.utils;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -181,7 +183,7 @@ public class ETHWalletUtils {
         ethWallet.setName(walletName);
         ethWallet.setAddress(Keys.toChecksumAddress(walletFile.getAddress()));
         ethWallet.setKeystorePath(destination.getAbsolutePath());
-        ethWallet.setPassword(Md5Utils.md5(pwd));
+        ethWallet.setPassword(pwd);
         return ethWallet;
     }
 
@@ -272,12 +274,10 @@ public class ETHWalletUtils {
     /**
      * 导出明文私钥
      *
-     * @param walletId 钱包Id
      * @param pwd      钱包密码
      * @return
      */
-    public static String derivePrivateKey(long walletId, String pwd) {
-        ETHWallet ethWallet = WalletDaoUtils.ethWalletDao.load(walletId);
+    public static String derivePrivateKey(ETHWallet ethWallet, String pwd) {
         Credentials credentials;
         ECKeyPair keypair;
         String privateKey = null;
@@ -287,8 +287,10 @@ public class ETHWalletUtils {
             privateKey = Numeric.toHexStringNoPrefixZeroPadded(keypair.getPrivateKey(), Keys.PRIVATE_KEY_LENGTH_IN_HEX);
         } catch (CipherException e) {
             e.printStackTrace();
+            Log.e("token22",e.toString());
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e("token33",e.toString());
         }
         return privateKey;
     }
