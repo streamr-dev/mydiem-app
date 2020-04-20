@@ -26,6 +26,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
+import org.web3j.protocol.admin.Admin;
 import org.web3j.protocol.admin.AdminFactory;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
@@ -45,6 +46,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.fs.vip.utils.Utils.toDecimal;
+import static org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction;
 
 public class HistoryWalletFragment extends BaseMainFragment implements Toolbar.OnMenuItemClickListener, BaseQuickAdapter.RequestLoadMoreListener {
 
@@ -179,8 +181,8 @@ public class HistoryWalletFragment extends BaseMainFragment implements Toolbar.O
 
     private void getBalance(String adddress) {
         Observable.create((ObservableOnSubscribe<String>) e -> {
-            String value = AdminFactory.build(new HttpService("https://mainnet.infura.io/"))
-                    .ethCall(Transaction.createEthCallTransaction(adddress,
+            String value = AdminFactory.build(new HttpService("https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1"))
+                    .ethCall(createEthCallTransaction(adddress,
                             "0x0Cf0Ee63788A0849fE5297F3407f701E122cC023", DATA_PREFIX + adddress.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
             BigInteger s = new BigInteger(value.substring(2), 16);
             e.onNext(toDecimal(18, s));
@@ -189,6 +191,7 @@ public class HistoryWalletFragment extends BaseMainFragment implements Toolbar.O
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
@@ -199,6 +202,7 @@ public class HistoryWalletFragment extends BaseMainFragment implements Toolbar.O
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.e("sdfsdf",e.toString());
                         dismissDialog();
                         if (tvBalance != null)
                             tvBalance.setText("error");

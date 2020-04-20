@@ -89,7 +89,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
     <style name="tab_appearance">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="dialog" parent="@android:style/Theme.Dialog">

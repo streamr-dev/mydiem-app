@@ -2,8 +2,8 @@ package com.fs.vip.ui.main;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -13,27 +13,39 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.fs.vip.R;
-import com.fs.vip.Statistics.AppInformation;
 import com.fs.vip.Statistics.StatisticsInfo;
 import com.fs.vip.base.BaseMainFragment;
 import com.fs.vip.base.MySupportActivity;
 import com.fs.vip.base.MySupportFragment;
+import com.fs.vip.domain.ETHWallet;
+import com.fs.vip.domain.EarnFromGrop;
 import com.fs.vip.domain.EventAppNum;
 import com.fs.vip.domain.EventName;
+import com.fs.vip.domain.JoinGroup;
 import com.fs.vip.ui.main.account.AccountFragment;
 import com.fs.vip.ui.main.applications.ApplicationsFragment;
 import com.fs.vip.ui.main.data_union.DataUnionFragment;
+import com.fs.vip.ui.main.extra.ExtraFragment;
 import com.fs.vip.ui.main.privacy.PrivacyFragment;
 import com.fs.vip.ui.main.wallet.WalletFragment;
+import com.fs.vip.utils.ETHWalletUtils;
 import com.fs.vip.utils.Md5Utils;
 import com.fs.vip.utils.SharedPreferencesUtil;
+import com.fs.vip.utils.ToastUtils;
+import com.fs.vip.utils.WalletDaoUtils;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.streamr.client.StreamrClient;
+import com.streamr.client.authentication.EthereumAuthenticationMethod;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,6 +87,7 @@ public class MainActivity extends MySupportActivity implements NavigationView.On
         initView();
         getConnetApps();
     }
+
 
     private void initView() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -137,6 +150,13 @@ public class MainActivity extends MySupportActivity implements NavigationView.On
                 } else {
                     myHome.start(fragment, SupportFragment.SINGLETASK);
                 }
+            } else if (id == R.id.nav_6) {
+                ExtraFragment fragment = findFragment(ExtraFragment.class);
+                if (fragment == null) {
+                    myHome.startWithPopTo(ExtraFragment.newInstance(), ExtraFragment.class, false);
+                } else {
+                    myHome.start(fragment, SupportFragment.SINGLETASK);
+                }
             }
         }, 300);
 
@@ -178,9 +198,10 @@ public class MainActivity extends MySupportActivity implements NavigationView.On
     public void d(EventName eventMsg) {
         tvName.setText(eventMsg.getUserName());
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void d(EventAppNum eventMsg) {
-        tvAppNum.setText(eventMsg.getNum()+" apps connected");
+        tvAppNum.setText(eventMsg.getNum() + " apps connected");
     }
 
 

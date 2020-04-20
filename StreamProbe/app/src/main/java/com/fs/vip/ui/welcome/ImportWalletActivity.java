@@ -1,7 +1,9 @@
 package com.fs.vip.ui.welcome;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,11 +13,18 @@ import androidx.appcompat.widget.Toolbar;
 import com.fs.vip.R;
 import com.fs.vip.base.BaseActivity;
 import com.fs.vip.domain.ETHWallet;
+import com.fs.vip.domain.JoinGroup;
 import com.fs.vip.ui.personal.AppsInfoActivity;
 import com.fs.vip.utils.ETHWalletUtils;
 import com.fs.vip.utils.SharedPreferencesUtil;
 import com.fs.vip.utils.ToastUtils;
 import com.fs.vip.utils.WalletDaoUtils;
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.streamr.client.StreamrClient;
+import com.streamr.client.authentication.EthereumAuthenticationMethod;
 
 import java.util.Arrays;
 
@@ -90,10 +99,7 @@ public class ImportWalletActivity extends BaseActivity {
 
                         @Override
                         public void onNext(ETHWallet wallet) {
-                            dismissDialog();
-                            SharedPreferencesUtil.getInstance().putString("welcomed", "true");
-                            Intent intent = new Intent(mContext,AppsInfoActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
+                            AddToGroup(wallet);
                         }
 
                         @Override
@@ -109,5 +115,50 @@ public class ImportWalletActivity extends BaseActivity {
                     });
 
         }
+    }
+    private void AddToGroup(ETHWallet wallet) {
+        new Thread(() -> {
+            try {
+                String privateKey = ETHWalletUtils.derivePrivateKey(wallet, wallet.getPassword());
+                StreamrClient client = new StreamrClient(new EthereumAuthenticationMethod(privateKey));
+                final String token = client.getSessionToken();
+                SharedPreferencesUtil.getInstance().putString("token",token);
+                String url = "https://www.streamr.com/api/v1/communities/0x0df55C565881b253D307e9a8a95C907DFA228283/joinRequests";
+                OkGo.<String>post(url)
+                        .retryCount(3)
+                        .params("memberAddress", wallet.getAddress())
+                        .params("secret","8cQvKcMj.QmHMMJ6")
+                        .headers("Content-Type","application/x-www-form-urlencoded")
+                        .headers("authorization","bearer "+token)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                JoinGroup mJoin = new Gson().fromJson(response.body(),JoinGroup.class);
+                                if (!TextUtils.isEmpty(mJoin.getId())){
+                                    dismissDialog();
+                                    SharedPreferencesUtil.getInstance().putString("welcomed", "true");
+                                    Intent intent = new Intent(mContext,AppsInfoActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Response<String> response) {
+                                super.onError(response);
+
+                            }
+
+
+                            @Override
+                            public void onFinish() {
+                                super.onFinish();
+                            }
+                        });
+            } catch (Exception e) {
+                Log.e("token", e.toString());
+            }
+
+        }).start();
+
     }
 }

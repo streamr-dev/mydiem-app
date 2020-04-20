@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tl="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".ui.main.data_union.DataUnionFragment">
 
     <include layout="@layout/toolbar" />
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,8 +21,8 @@
             tl:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-
         </FrameLayout>
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,33 +36,54 @@
                 tl:layout_scrollFlags="scroll|enterAlways">
 
                 <TextView
+                    android:id="@+id/tv_app_num"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="24 560"
-                    android:gravity="center"
-                    android:textSize="30sp"
                     android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text=""
                     android:textColor="@color/black"
-                    android:textStyle="bold"/>
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:text="USERS IN THIS\nDATA UNION"
                     android:textColor="#06A1FD"
-                    android:text="USERS IN THIS\nDATA UNION"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_earn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="  DATA balance   DATA available" />
+
                 <Button
                     android:id="@+id/btn_state"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="36dp"
-                    android:text="DISABLE STREAMING"
-                    android:textColor="@color/white"
-                    android:layout_marginRight="36dp"
                     android:layout_height="40dp"
+                    android:layout_marginLeft="36dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginRight="36dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/base_button_shape_red"
+                    android:text="DISABLE STREAMING"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btn_withdraw"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginRight="36dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/base_button_shape_red"/>
+                    android:background="@drawable/base_button_shape_white"
+                    android:text="WITHDRAW"
+                    android:textColor="#ff0000" />
 
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>

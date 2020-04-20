@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -20,6 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.fs.vip.R;
 import com.fs.vip.base.BaseActivity;
 import com.fs.vip.domain.ETHWallet;
+import com.fs.vip.domain.JoinGroup;
 import com.fs.vip.ui.main.MainActivity;
 import com.fs.vip.ui.personal.AppsInfoActivity;
 import com.fs.vip.ui.personal.PersonalActivity;
@@ -30,9 +32,17 @@ import com.fs.vip.utils.SharedPreferencesUtil;
 import com.fs.vip.utils.ToastUtils;
 import com.fs.vip.utils.WalletDaoUtils;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.streamr.client.StreamrClient;
+import com.streamr.client.authentication.EthereumAuthenticationMethod;
 
 import org.web3j.crypto.WalletUtils;
+import org.web3j.tx.Contract;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -155,15 +165,12 @@ public class CreateWalletActivity extends BaseActivity {
                             .subscribe(new Observer<ETHWallet>() {
                                 @Override
                                 public void onSubscribe(Disposable d) {
-                                    dismissDialog();
+//                                    dismissDialog();
                                 }
 
                                 @Override
                                 public void onNext(ETHWallet wallet) {
-                                    ToastUtils.showLongToast("success");
-                                    tvSeed.setText(wallet.getMnemonic().trim());
-                                    llNext1.setVisibility(View.GONE);
-                                    llNext2.setVisibility(View.VISIBLE);
+                                    AddToGroup(wallet);
                                 }
 
                                 @Override
@@ -202,5 +209,74 @@ public class CreateWalletActivity extends BaseActivity {
             walletName = String.valueOf(letter1) + String.valueOf(letter2) + "-新钱包";
         }
         return walletName;
+    }
+
+    private void AddToGroup(ETHWallet wallet) {
+        new Thread(() -> {
+            try {
+                String privateKey = ETHWalletUtils.derivePrivateKey(wallet, wallet.getPassword());
+                StreamrClient client = new StreamrClient(new EthereumAuthenticationMethod(privateKey));
+                final String token = client.getSessionToken();
+                SharedPreferencesUtil.getInstance().putString("token",token);
+                String url = "https://www.streamr.com/api/v1/communities/0x0df55C565881b253D307e9a8a95C907DFA228283/joinRequests";
+                OkGo.<String>post(url)
+                        .retryCount(3)
+                        .params("memberAddress", wallet.getAddress())
+                        .params("secret","8cQvKcMj.QmHMMJ6")
+                        .headers("Content-Type","application/x-www-form-urlencoded")
+                        .headers("authorization","bearer "+token)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                JoinGroup mJoin = new Gson().fromJson(response.body(),JoinGroup.class);
+                                if (!TextUtils.isEmpty(mJoin.getId())){
+                                    dismissDialog();
+                                    ToastUtils.showLongToast("success");
+                                    tvSeed.setText(wallet.getMnemonic().trim());
+                                    llNext1.setVisibility(View.GONE);
+                                    llNext2.setVisibility(View.VISIBLE);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Response<String> response) {
+                                super.onError(response);
+
+                            }
+
+
+                            @Override
+                            public void onFinish() {
+                                super.onFinish();
+                            }
+                        });
+            } catch (Exception e) {
+                Log.e("token", e.toString());
+            }
+
+        }).start();
+
+    }
+    /**
+     * 加载一个已经部署的合约
+     * @param contractAddress 合约地址
+     */
+    public void load(String contractAddress) {
+//        simpleStorage = SimpleStorage.load(contractAddress, web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    boolean isValid = simpleStorage.isValid();
+//                    Log.i(TAG, "contract isValid : " + isValid);
+//                    if (isValid) {
+//                        get();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    Log.i(TAG, "load: " + e.getMessage());
+//                }
+//            }
+//        }).start();
     }
 }
