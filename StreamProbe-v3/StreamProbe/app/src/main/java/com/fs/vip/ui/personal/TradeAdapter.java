@@ -27,6 +27,7 @@ public class TradeAdapter extends BaseQuickAdapter<TradeBeaen.ResultBean, BaseVi
 
     @Override
     protected void convert(BaseViewHolder helper, TradeBeaen.ResultBean item) {
+        Log.e("asdasd",item.getTimeStamp());
         helper.setText(R.id.tv_time, Utils.getDateToString(item.getTimeStamp()));
         BigInteger s = new BigInteger(item.getValue());
         helper.setText(R.id.tv_value, df.format(Double.parseDouble(toDecimal(18,s))));

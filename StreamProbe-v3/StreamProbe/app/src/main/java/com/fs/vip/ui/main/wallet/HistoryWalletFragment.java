@@ -133,31 +133,38 @@ public class HistoryWalletFragment extends BaseMainFragment implements Toolbar.O
     }
 
     private void LoadData() {
-        String url = "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=0x0Cf0Ee63788A0849fE5297F3407f701E122cC023&address=" + ethWallet.getAddress() + "&page=" + page + "&offset=20&sort=asc";
+        String url = "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=0x0Cf0Ee63788A0849fE5297F3407f701E122cC023&address=" + ethWallet.getAddress() + "&page=" + page + "&offset=20&sort=asc&apikey=R8CN9Y7XXN4Z2C41UCNE898XFJKCA1N3R6";
         OkGo.<String>get(url)
                 .retryCount(3)
                 .execute(new StringCallback() {
 
                     @Override
                     public void onSuccess(Response<String> response) {
-                        if (tvBalance!=null){
+                        if (tvBalance != null) {
                             dismissDialog();
                             Gson gson = new Gson();
-                            TradeBeaen bean = gson.fromJson(response.body(), TradeBeaen.class);
-                            if ("1".equals(bean.getStatus())) {
-                                adapter.addData(bean.getResult());
-                                adapter.notifyDataSetChanged();
-                                adapter.loadMoreComplete();
-                            } else {
+                            String data = response.body();
+                            Log.e("sdfadsfdfs",data);
+                            try {
+                                TradeBeaen bean = gson.fromJson(data, TradeBeaen.class);
+                                if ("1".equals(bean.getStatus())) {
+                                    adapter.addData(bean.getResult());
+                                    adapter.notifyDataSetChanged();
+                                    adapter.loadMoreComplete();
+                                } else {
+                                    adapter.loadMoreEnd();
+                                }
+                            } catch (Exception e) {
                                 adapter.loadMoreEnd();
                             }
+
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        if (tvBalance!=null){
+                        if (tvBalance != null) {
                             ToastUtils.showLongToast("Something Wrong...");
                             dismissDialog();
                         }
@@ -202,7 +209,7 @@ public class HistoryWalletFragment extends BaseMainFragment implements Toolbar.O
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("sdfsdf",e.toString());
+                        Log.e("sdfsdf", e.toString());
                         dismissDialog();
                         if (tvBalance != null)
                             tvBalance.setText("error");

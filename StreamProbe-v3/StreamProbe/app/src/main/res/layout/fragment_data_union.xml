@@ -35,55 +35,143 @@
                 android:orientation="vertical"
                 tl:layout_scrollFlags="scroll|enterAlways">
 
-                <TextView
-                    android:id="@+id/tv_app_num"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal">
 
-                <TextView
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_app_num"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text=""
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="USERS IN\nDATAUNION"
+                            android:textColor="#59A8EA"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <com.fs.vip.view.DividerView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layerType="software"
+                        tl:dashGap="1dp"
+                        tl:dashLength="1dp"
+                        tl:divider_line_color="@color/grgray"
+                        tl:divider_orientation="vertical"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_earn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text=""
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="BALANCE\nIN DATA"
+                            android:textColor="#59A8EA"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <com.fs.vip.view.DividerView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layerType="software"
+                        tl:dashGap="1dp"
+                        tl:dashLength="1dp"
+                        tl:divider_line_color="@color/grgray"
+                        tl:divider_orientation="vertical"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_ava"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text=""
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="AVAILABLE\nDATA"
+                            android:textColor="#59A8EA"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="USERS IN THIS\nDATA UNION"
-                    android:textColor="#06A1FD"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_earn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="  DATA balance   DATA available" />
-
-                <Button
-                    android:id="@+id/btn_state"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="36dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="36dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/base_button_shape_red"
-                    android:text="DISABLE STREAMING"
-                    android:textColor="@color/white" />
+                    android:layout_marginRight="40dp"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_withdraw"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="36dp"
-                    android:layout_marginRight="36dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/base_button_shape_white"
-                    android:text="WITHDRAW"
-                    android:textColor="#ff0000" />
+                    <Button
+                        android:id="@+id/btn_state"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/base_button_shape_red"
+                        android:text="DISABLE"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/btn_withdraw"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_selectors"
+                        android:text="TRANSFER"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
 
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>

@@ -22,5 +22,6 @@ public class TimeUsedAdapter extends BaseQuickAdapter<AppInformation, BaseViewHo
         DecimalFormat df = new DecimalFormat("#,###");
         helper.setText(R.id.tv_time, item.getUsedTimebyDay() / 1000 / 60 != 0 ? df.format(item.getUsedTimebyDay() / 1000 / 60) + " min" : df.format(item.getUsedTimebyDay() / 1000) + " s");
         helper.setImageDrawable(R.id.iv_icon, item.getIcon());
+        helper.setText(R.id.tv_icon,helper.getAdapterPosition()+1+"");
     }
 }

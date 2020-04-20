@@ -1,13 +1,8 @@
 package com.fs.vip.ui.main.extra;
 
 import android.Manifest;
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,28 +11,15 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
 import com.fs.vip.R;
 import com.fs.vip.base.BaseMainFragment;
-import com.fs.vip.domain.ETHWalletDao;
-import com.fs.vip.service.DeService;
-import com.fs.vip.ui.main.MainActivity;
-import com.fs.vip.ui.main.privacy.PrivacyFragment;
-import com.fs.vip.ui.welcome.CreateWalletActivity;
-import com.fs.vip.ui.welcome.PermissionStatsActivity;
-import com.fs.vip.utils.ETHMnemonic;
-import com.fs.vip.utils.MyLocation;
 import com.fs.vip.utils.PermissionUtils;
 import com.fs.vip.utils.SharedPreferencesUtil;
-import com.fs.vip.utils.Utils;
 import com.fs.vip.utils.WalletDaoUtils;
-import com.mobile.mobilehardware.local.LocalHelper;
 
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,28 +66,28 @@ public class ExtraFragment extends BaseMainFragment implements Toolbar.OnMenuIte
             }
         });
 
-        MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
-            @Override
-            public void gotLocation(Location location){
-                if (location!=null) {
-                    Geocoder geocoder = new Geocoder(getActivity());
-                    List<Address> addList = null;// 解析经纬度
-                    try {
-                        addList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (addList != null && addList.size() > 0) {
-                        for (int i = 0; i < addList.size(); i++) {
-                            Address add = addList.get(i);
-                            Log.e("esdfsdfsdf",add.toString());
-                        }
-                    }
-                }
-            }
-        };
-        MyLocation myLocation = new MyLocation();
-        myLocation.getLocation(getActivity(), locationResult);
+//        MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
+//            @Override
+//            public void gotLocation(Location location) {
+//                if (location != null && getActivity() != null) {
+//                    Geocoder geocoder = new Geocoder(getActivity());
+//                    List<Address> addList = null;// 解析经纬度
+//                    try {
+//                        addList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    if (addList != null && addList.size() > 0) {
+//                        for (int i = 0; i < addList.size(); i++) {
+//                            Address add = addList.get(i);
+//                            Log.e("sdfdsf",add.toString());
+//                        }
+//                    }
+//                }
+//            }
+//        };
+//        MyLocation myLocation = new MyLocation();
+//        myLocation.getLocation(getActivity(), locationResult);
 
     }
 
@@ -130,7 +112,6 @@ public class ExtraFragment extends BaseMainFragment implements Toolbar.OnMenuIte
         super.onResume();
         getPermission();
         initSwitch();
-        Log.e("sdfsdf", SharedPreferencesUtil.getInstance().getBoolean(WalletDaoUtils.getCurrent().getAddress()) + "");
     }
 
     void getPermission() {
