@@ -24,6 +24,7 @@ import com.fs.vip.domain.Xxx;
 import com.fs.vip.service.DeService;
 import com.fs.vip.utils.LoggingInterceptor;
 import com.fs.vip.utils.SharedPreferencesUtil;
+import com.fs.vip.utils.Utils;
 import com.fs.vip.utils.WalletDaoUtils;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
@@ -34,10 +35,13 @@ import com.xdandroid.hellodaemon.DaemonEnv;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.admin.AdminFactory;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Numeric;
 
@@ -115,6 +119,39 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
         mToolbar.setOnMenuItemClickListener(this);
         handleStream();
         getAppNums();
+        getGas(false);
+    }
+
+    private void getGas(boolean needToTrans) {
+        String url = "https://ethgasstation.info/api/ethgasAPI.json";
+        OkGo.<String>get(url)
+                .retryCount(3)
+                .headers("Content-Type", "application/x-www-form-urlencoded")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        String temp = response.body();
+                        try {
+                            JSONObject jsonObject = new JSONObject(temp);
+                            long gasPrice = jsonObject.getLong("fast");
+                            WithDraw(gasPrice);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                    }
+
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                    }
+                });
     }
 
     private void handleStream() {
@@ -133,7 +170,7 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
                     @Override
                     public void onSuccess(Response<String> response) {
                         String temp = response.body();
-                        Log.e("DataUnionFragment",temp);
+                        Log.e("DataUnionFragment111", temp);
                         mEarnFromGrop = new Gson().fromJson(temp, EarnFromGrop.class);
                         if (tvEarn != null) {
                             if (!TextUtils.isEmpty(mEarnFromGrop.getEarnings())) {
@@ -146,7 +183,7 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        Log.e("DataUnionFragment",response.code()+"");
+                        Log.e("DataUnionFragment111", response.toString());
 //                        if (tvEarn != null) {
 //                            getEarn2(WalletDaoUtils.getCurrent());
 //                        }
@@ -171,15 +208,15 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
                     boolean isValid = xxx.isValid();
                     if (isValid) {
                         BigInteger temp = xxx.withdrawn(WalletDaoUtils.getCurrent().getAddress()).send();
-                        Log.e("sdfdsfsdf", temp + "");
                         if (getActivity() != null) {
                             getActivity().runOnUiThread(() -> {
-                                tvAva.setText(df.format(Double.parseDouble(toDecimal(18, new BigInteger(mEarnFromGrop.getEarnings()).subtract(temp)))));
+                                tvAva.setText(df.format(Double.parseDouble(toDecimal(18, new BigInteger(mEarnFromGrop.getWithdrawableEarnings()).subtract(temp)))));
                             });
                         }
 
                     }
                 } catch (Exception e) {
+                    Log.e("sdfdsfsdf", e.toString() + "");
                     e.printStackTrace();
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(new Runnable() {
@@ -206,7 +243,7 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
                     @Override
                     public void onSuccess(Response<String> response) {
                         String temp = response.body();
-                        Log.e("DataUnionFragment",temp);
+                        Log.e("DataUnionFragment", temp);
                         AllApps mAllApps = new Gson().fromJson(temp, AllApps.class);
                         if (mAllApps != null && mAllApps.getMemberCount() != null)
                             tvAppNum.setText(mAllApps.getMemberCount().getTotal() + "");
@@ -215,7 +252,7 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        Log.e("DataUnionFragment",response.code()+"");
+                        Log.e("DataUnionFragment", response.code() + "");
 //                        if (tvEarn != null) {
 //                            getEarn2(WalletDaoUtils.getCurrent());
 //                        }
@@ -244,7 +281,7 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (EventBus.getDefault()!=null) EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault() != null) EventBus.getDefault().unregister(this);
         if (this.mUnBinder != null) {
             this.mUnBinder.unbind();
         }
@@ -277,46 +314,50 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
         }
     }
 
+    private void WithDraw(long gasPrice) {
+        new Thread(() -> {
+            try {
+                Web3j web3j = AdminFactory.build(new HttpService("https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1"));//https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1
+                Credentials credentials = WalletUtils.loadCredentials(WalletDaoUtils.getCurrent().getPassword(), WalletDaoUtils.getCurrent().getKeystorePath());
+                Xxx xxx = Xxx.load("0xE7Ca8db13F6866E495dd38d4c5585F9c897CA49F", web3j, credentials, BigInteger.valueOf(gasPrice / 10 * 1000000000), BigInteger.valueOf(200000L));
+                boolean isValid = xxx.isValid();
+                if (isValid) {
+                    List<byte[]> b = new ArrayList<>();
+                    for (int i = 0; i < mEarnFromGrop.getProof().size(); i++) {
+                        b.add(Numeric.hexStringToByteArray(mEarnFromGrop.getProof().get(i)));
+                    }
+                    BigInteger block = new BigInteger(mEarnFromGrop.getWithdrawableBlockNumber());
+                    BigInteger earn = new BigInteger(mEarnFromGrop.getWithdrawableEarnings());//mEarnFromGrop.getWithdrawableEarnings()
+                    TransactionReceipt transactionReceipt = xxx.withdrawAll(block, earn, b).send();
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(() -> {
+                            hideDialog();
+                            Toast.makeText(getActivity(), transactionReceipt.getStatus().equals("0x0") ? "failed" : "succeed", Toast.LENGTH_LONG).show();
+                            if (WalletDaoUtils.getCurrent() != null)
+                                getEarn(WalletDaoUtils.getCurrent().getAddress());
+                        });
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideDialog();
+                            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
     @OnClick(R.id.btn_withdraw)
     public void onViewClickedWith() {
         if (WalletDaoUtils.getCurrent() != null) {
             showDialog("working...");
-            new Thread(() -> {
-                try {
-                    Web3j web3j = AdminFactory.build(new HttpService("https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1"));//https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1
-                    Credentials credentials = WalletUtils.loadCredentials(WalletDaoUtils.getCurrent().getPassword(), WalletDaoUtils.getCurrent().getKeystorePath());
-                    Xxx xxx = Xxx.load("0xE7Ca8db13F6866E495dd38d4c5585F9c897CA49F", web3j, credentials, BigInteger.valueOf(5000000000L), BigInteger.valueOf(200000L));
-                    boolean isValid = xxx.isValid();
-                    if (isValid) {
-                        List<byte[]> b = new ArrayList<>();
-                        for (int i = 0; i < mEarnFromGrop.getProof().size(); i++) {
-                            b.add(Numeric.hexStringToByteArray(mEarnFromGrop.getProof().get(i)));
-                        }
-                        BigInteger block = new BigInteger(mEarnFromGrop.getWithdrawableBlockNumber());
-                        BigInteger earn = new BigInteger(mEarnFromGrop.getWithdrawableEarnings());//mEarnFromGrop.getWithdrawableEarnings()
-                        xxx.withdrawAll(block, earn, b).send();
-                        if (getActivity() != null) {
-                            getActivity().runOnUiThread(() -> {
-                                hideDialog();
-                                Toast.makeText(getActivity(), "success", Toast.LENGTH_LONG).show();
-                                if (WalletDaoUtils.getCurrent() != null)
-                                    getEarn(WalletDaoUtils.getCurrent().getAddress());
-                            });
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                hideDialog();
-                                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-                }
-            }).start();
+            getGas(true);
         }
 
     }
@@ -329,7 +370,8 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void d(RefreshHome eventMsg) {
-        if (eventMsg.isRefresh()){
+        if (eventMsg.isRefresh()) {
+            Log.e("sdfasdfsadf", "fresh");
             handleStream();
             getAppNums();
         }

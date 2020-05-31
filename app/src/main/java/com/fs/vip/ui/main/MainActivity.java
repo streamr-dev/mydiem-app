@@ -108,6 +108,8 @@ public class MainActivity extends MySupportActivity implements NavigationView.On
                 } else {
                     myHome.start(fragment, SupportFragment.SINGLETASK);
                 }
+                EventBus.getDefault().postSticky(new RefreshHome(true));
+
             } else if (id == R.id.nav_2) {
                 WalletFragment fragment = findFragment(WalletFragment.class);
                 if (fragment == null) {
