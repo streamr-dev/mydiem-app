@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
+import com.alibaba.fastjson.JSON;
 import com.fs.vip.R;
 import com.fs.vip.base.BaseActivity;
 import com.fs.vip.domain.ETHWallet;
@@ -35,6 +36,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.Response;
 import com.streamr.client.StreamrClient;
 import com.streamr.client.authentication.EthereumAuthenticationMethod;
@@ -43,6 +45,7 @@ import org.web3j.crypto.WalletUtils;
 import org.web3j.tx.Contract;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -202,11 +205,11 @@ public class CreateWalletActivity extends BaseActivity {
     private static String generateNewWalletName() {
         char letter1 = (char) (int) (Math.random() * 26 + 97);
         char letter2 = (char) (int) (Math.random() * 26 + 97);
-        String walletName = String.valueOf(letter1) + String.valueOf(letter2) + "-新钱包";
+        String walletName = String.valueOf(letter1) + String.valueOf(letter2) + "-new_wallet";
         while (WalletDaoUtils.walletNameChecking(walletName)) {
             letter1 = (char) (int) (Math.random() * 26 + 97);
             letter2 = (char) (int) (Math.random() * 26 + 97);
-            walletName = String.valueOf(letter1) + String.valueOf(letter2) + "-新钱包";
+            walletName = String.valueOf(letter1) + String.valueOf(letter2) + "-new_wallet";
         }
         return walletName;
     }
@@ -219,11 +222,12 @@ public class CreateWalletActivity extends BaseActivity {
                 final String token = client.getSessionToken();
                 SharedPreferencesUtil.getInstance().putString("token",token);
                 String url = "https://www.streamr.com/api/v1/communities/0xE7Ca8db13F6866E495dd38d4c5585F9c897CA49F/joinRequests";
+                HashMap<String,String> params = new HashMap<>();
+                params.put("memberAddress", wallet.getAddress());
+                params.put("secret", "h6MdRoxQN69PXNVMxJoLM");
                 OkGo.<String>post(url)
                         .retryCount(3)
-                        .params("memberAddress", wallet.getAddress())
-                        .params("secret","h6MdRoxQN69PXNVMxJoLM")
-                        .headers("Content-Type","application/x-www-form-urlencoded")
+                        .upJson(JSON.toJSONString(params))
                         .headers("authorization","bearer "+token)
                         .execute(new StringCallback() {
                             @Override

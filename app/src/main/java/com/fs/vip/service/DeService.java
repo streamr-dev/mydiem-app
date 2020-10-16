@@ -25,6 +25,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import org.java_websocket.enums.ReadyState;
+
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -80,7 +82,7 @@ public class DeService extends AbsWorkService {
                     Stream stream = client.getStream("JYm4iCZbS9-ZqYtzSwH0eg");
                     Map<String, Object> msgs = new LinkedHashMap<>();
                     msgs.put("info", msg);
-                    if (client.getState() != StreamrClient.State.Connected) {
+                    if (client.getState() != ReadyState.OPEN) {
                         client.connect();
                     }
                     client.publish(stream, msgs);

@@ -135,12 +135,13 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     // Gif image animation
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
-    implementation ('com.streamr:client:1.2.4'){
+    implementation ('com.streamr:client:2.0.1'){
         exclude group: 'org.iq80.leveldb', module: 'leveldb-api'
     }
     implementation "org.cache2k:cache2k-api:1.2.4.Final"
     implementation "org.cache2k:cache2k-base-bom:1.2.4.Final"
     implementation "org.cache2k:cache2k-core:1.2.4.Final"
+    api 'com.alibaba:fastjson:1.2.61'
 //    implementation 'io.apisense:rhino-android:1.0'
 }
 

@@ -96,11 +96,11 @@ public class ETHWalletUtils {
     private static String generateNewWalletName() {
         char letter1 = (char) (int) (Math.random() * 26 + 97);
         char letter2 = (char) (int) (Math.random() * 26 + 97);
-        String walletName = String.valueOf(letter1) + String.valueOf(letter2) + "-新钱包";
+        String walletName = String.valueOf(letter1) + String.valueOf(letter2) + "-new_wallet";
         while (WalletDaoUtils.walletNameChecking(walletName)) {
             letter1 = (char) (int) (Math.random() * 26 + 97);
             letter2 = (char) (int) (Math.random() * 26 + 97);
-            walletName = String.valueOf(letter1) + String.valueOf(letter2) + "-新钱包";
+            walletName = String.valueOf(letter1) + String.valueOf(letter2) + "-new_wallet";
         }
         return walletName;
     }
