@@ -187,6 +187,7 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
 //                        if (tvEarn != null) {
 //                            getEarn2(WalletDaoUtils.getCurrent());
 //                        }
+                        //
                     }
 
 
