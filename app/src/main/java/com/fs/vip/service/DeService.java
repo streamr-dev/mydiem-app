@@ -11,11 +11,12 @@ import android.util.Log;
 
 import com.fs.vip.Statistics.AppInformation;
 import com.fs.vip.Statistics.StatisticsInfo;
+import com.fs.vip.utils.ETHWalletUtils;
 import com.fs.vip.utils.MyLocation;
 import com.fs.vip.utils.SharedPreferencesUtil;
 import com.fs.vip.utils.WalletDaoUtils;
 import com.streamr.client.StreamrClient;
-import com.streamr.client.authentication.ApiKeyAuthenticationMethod;
+import com.streamr.client.authentication.EthereumAuthenticationMethod;
 import com.streamr.client.rest.Stream;
 import com.xdandroid.hellodaemon.AbsWorkService;
 
@@ -43,7 +44,7 @@ public class DeService extends AbsWorkService {
     private static final int flags = PackageManager.GET_META_DATA |
             PackageManager.GET_SHARED_LIBRARY_FILES |
             PackageManager.GET_UNINSTALLED_PACKAGES;
-    private final String myApiKey = "rc0L3E0YQRCpfa-gWVz0YQoStpnwE7QTmeN9x3y21Xig";
+//    private final String myApiKey = "QQJ7ElNuT66GcKAEM_tGpwsheuVHsOQpiMVXDMYGsfTw";
 
     public static void stopService() {
         sShouldStopService = true;
@@ -63,7 +64,7 @@ public class DeService extends AbsWorkService {
         new Thread(() -> {
             if (WalletDaoUtils.getCurrent() != null) {
                 try {
-                    client = new StreamrClient(new ApiKeyAuthenticationMethod(myApiKey));
+                    client = new StreamrClient((new EthereumAuthenticationMethod(ETHWalletUtils.derivePrivateKey(WalletDaoUtils.getCurrent(), WalletDaoUtils.getCurrent().getPassword()))));
                     final String token = client.getSessionToken();
 //                    SharedPreferencesUtil.getInstance().putString("token", token);
                 } catch (Exception e) {
@@ -79,7 +80,7 @@ public class DeService extends AbsWorkService {
         new Thread(() -> {
             if (client != null) {
                 try {
-                    Stream stream = client.getStream("JYm4iCZbS9-ZqYtzSwH0eg");
+                    Stream stream = client.getStream("yO4Q-o5mSreJmkMR_kHo1w");
                     Map<String, Object> msgs = new LinkedHashMap<>();
                     msgs.put("info", msg);
                     if (client.getState() != ReadyState.OPEN) {
@@ -100,10 +101,10 @@ public class DeService extends AbsWorkService {
         new Thread(() -> {
             if (WalletDaoUtils.getCurrent() != null) {
                 try {
-                    client = new StreamrClient(new ApiKeyAuthenticationMethod(myApiKey));
+                    client = new StreamrClient(new EthereumAuthenticationMethod(ETHWalletUtils.derivePrivateKey(WalletDaoUtils.getCurrent(), WalletDaoUtils.getCurrent().getPassword())));
 //                    final String token = client.getSessionToken();
 //                    SharedPreferencesUtil.getInstance().putString("token", token);
-                    Stream stream = client.getStream("JYm4iCZbS9-ZqYtzSwH0eg");
+                    Stream stream = client.getStream("yO4Q-o5mSreJmkMR_kHo1w");
                     Map<String, Object> msgs = new LinkedHashMap<>();
                     msgs.put("info", msg);
                     client.publish(stream, msgs);

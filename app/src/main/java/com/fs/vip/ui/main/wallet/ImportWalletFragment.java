@@ -146,12 +146,12 @@ public class ImportWalletFragment extends BaseMainFragment {
                 StreamrClient client = new StreamrClient(new EthereumAuthenticationMethod(privateKey));
                 final String token = client.getSessionToken();
                 SharedPreferencesUtil.getInstance().putString("token",token);
-                String url = "https://www.streamr.com/api/v1/communities/0xE7Ca8db13F6866E495dd38d4c5585F9c897CA49F/joinRequests";
+                String url = "https://www.streamr.com/api/v1/dataunions/0x65ea2587c89aff664ca8b7de8c2ff49ba07e050e/joinRequests";
                 OkGo.<String>post(url)
                         .retryCount(3)
                         .params("memberAddress", wallet.getAddress())
-                        .params("secret","h6MdRoxQN69PXNVMxJoLM")
-                        .headers("Content-Type","application/x-www-form-urlencoded")
+                        .params("secret","QQJ7ElNuT66GcKAEM_tGpwsheuVHsOQpiMVXDMYGsfTw")
+                        .headers("Content-Type","application/json")
                         .headers("authorization","bearer "+token)
                         .execute(new StringCallback() {
                             @Override

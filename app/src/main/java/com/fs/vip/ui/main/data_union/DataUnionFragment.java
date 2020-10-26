@@ -134,7 +134,9 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
                         try {
                             JSONObject jsonObject = new JSONObject(temp);
                             long gasPrice = jsonObject.getLong("fast");
-                            WithDraw(gasPrice);
+                            if(needToTrans){
+                                WithDraw(gasPrice);
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -160,11 +162,12 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
     }
 
     private void getEarn(String address) {
-        String url = "https://streamr.network/api/v1/communities/0xE7Ca8db13F6866E495dd38d4c5585F9c897CA49F/members/" + address;//0x8Aa66dfC6DA5DA31c08DEb35Da9D58A5B2f51099
+        String url = "https://streamr.network/api/v1/dataunions/0xE7Ca8db13F6866E495dd38d4c5585F9c897CA49F/members/" + address;//0x8Aa66dfC6DA5DA31c08DEb35Da9D58A5B2f51099
         OkGo.<String>get(url)
                 .retryCount(3)
-                .headers("Content-Type", "application/x-www-form-urlencoded")
-//                .headers("authorization", "bearer " + SharedPreferencesUtil.getInstance().getString("token"))
+                .headers("" +
+                        "Content-Type", "application/json")
+                .headers("authorization", "bearer " + SharedPreferencesUtil.getInstance().getString("token"))
 //                .client(client)
                 .execute(new StringCallback() {
                     @Override
@@ -203,9 +206,9 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
         if (WalletDaoUtils.getCurrent() != null) {
             new Thread(() -> {
                 try {
-                    Web3j web3j = AdminFactory.build(new HttpService("https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1"));//https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1
+                    Web3j web3j = AdminFactory.build(new HttpService("https://mainnet.infura.io/v3/e8ea5b44f3f440c1a70790c8963ffbf1"));//https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1
                     Credentials credentials = WalletUtils.loadCredentials(WalletDaoUtils.getCurrent().getPassword(), WalletDaoUtils.getCurrent().getKeystorePath());
-                    Xxx xxx = Xxx.load("0xE7Ca8db13F6866E495dd38d4c5585F9c897CA49F", web3j, credentials, BigInteger.valueOf(5000000000L), BigInteger.valueOf(200000L));
+                    Xxx xxx = Xxx.load("0x65ea2587c89aff664ca8b7de8c2ff49ba07e050e", web3j, credentials, BigInteger.valueOf(5000000000L), BigInteger.valueOf(200000L));
                     boolean isValid = xxx.isValid();
                     if (isValid) {
                         BigInteger temp = xxx.withdrawn(WalletDaoUtils.getCurrent().getAddress()).send();
@@ -234,7 +237,7 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
     }
 
     private void getAppNums() {
-        String url = "https://streamr.network/api/v1/communities/0xE7Ca8db13F6866E495dd38d4c5585F9c897CA49F/stats";
+        String url = "https://streamr.network/api/v1/dataunions/0xE7Ca8db13F6866E495dd38d4c5585F9c897CA49F/stats";
         OkGo.<String>get(url)
                 .retryCount(3)
                 .headers("Content-Type", "application/x-www-form-urlencoded")
@@ -318,9 +321,9 @@ public class DataUnionFragment extends BaseMainFragment implements Toolbar.OnMen
     private void WithDraw(long gasPrice) {
         new Thread(() -> {
             try {
-                Web3j web3j = AdminFactory.build(new HttpService("https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1"));//https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1
+                Web3j web3j = AdminFactory.build(new HttpService("https://mainnet.infura.io/v3/e8ea5b44f3f440c1a70790c8963ffbf1"));//https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1
                 Credentials credentials = WalletUtils.loadCredentials(WalletDaoUtils.getCurrent().getPassword(), WalletDaoUtils.getCurrent().getKeystorePath());
-                Xxx xxx = Xxx.load("0xE7Ca8db13F6866E495dd38d4c5585F9c897CA49F", web3j, credentials, BigInteger.valueOf(gasPrice / 10 * 1000000000), BigInteger.valueOf(200000L));
+                Xxx xxx = Xxx.load("0x65ea2587c89aff664ca8b7de8c2ff49ba07e050e", web3j, credentials, BigInteger.valueOf(gasPrice / 10 * 1000000000), BigInteger.valueOf(200000L));
                 boolean isValid = xxx.isValid();
                 if (isValid) {
                     List<byte[]> b = new ArrayList<>();

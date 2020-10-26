@@ -188,9 +188,9 @@ public class HistoryWalletFragment extends BaseMainFragment implements Toolbar.O
 
     private void getBalance(String adddress) {
         Observable.create((ObservableOnSubscribe<String>) e -> {
-            String value = AdminFactory.build(new HttpService("https://mainnet.infura.io/v3/b3d37e5be0824340a24d34bb9f2196c1"))
+            String value = AdminFactory.build(new HttpService("https://mainnet.infura.io/v3/e8ea5b44f3f440c1a70790c8963ffbf1"))
                     .ethCall(createEthCallTransaction(adddress,
-                            "0x0Cf0Ee63788A0849fE5297F3407f701E122cC023", DATA_PREFIX + adddress.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
+                            "0x65ea2587c89aff664ca8b7de8c2ff49ba07e050e", DATA_PREFIX + adddress.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
             BigInteger s = new BigInteger(value.substring(2), 16);
             e.onNext(toDecimal(18, s));
         }).subscribeOn(Schedulers.io())
